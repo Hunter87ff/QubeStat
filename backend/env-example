@@ -16,3 +16,10 @@ SMTP_USER=<your_user_id>
 SMTP_PASS=<your_password>
 SMTP_FROM=qubestat@gmail.com
 SMTP_FROM_NAME=QubeStat
+
+# PayU Payment Gateway
+PAYU_ENVIRONMENT=test # Change to 'production' in production
+PAYU_KEY=<your_payu_key>
+PAYU_SALT=<your_payu_salt>
+PAYU_SUCCESS_URL=<your_success_url>
+PAYU_FAILURE_URL=<your_failure_url>
