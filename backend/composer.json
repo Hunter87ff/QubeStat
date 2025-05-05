@@ -5,6 +5,7 @@
     "type": "object",
     "require": {
         "vlucas/phpdotenv": "^5.5",
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "^6.9",
+        "guzzlehttp/guzzle": "^7.9"
     }
 }
