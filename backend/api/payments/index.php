@@ -1,42 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <base href="https://test.payu.in/" target="_blank">
-</head>
-<body>
 <?php
-require_once(__DIR__ . '/../../vendor/autoload.php');
 
-$client = new \GuzzleHttp\Client();
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json");
 
-$response = $client->request('POST', 'https://test.payu.in/_payment', [
-  'form_params' => [
-    'key' => 'JPM7Fg',
-    'surl' => 'https://test-payment-middleware.payu.in/simulatorResponse',
-    'furl' => 'https://test-payment-middleware.payu.in/simulatorResponse',
-    'txnid' => 'gt8l938459435',
-    'amount' => 10,
-    'productinfo' => 'iPhone',
-    'firstname' => 'Hunter',
-    'email' => 'test@test.com',
-    'phone' => 6969696969,
-    'address1' => 'Kolkata',
-    'city' => 'You will never know',
-    'state' => 'West Bengal',
-    'country' => 'India',
-    'zipcode' => '70009',
-    'hash' => '08087d00df6da3effecb7b3cb80104512869359946551c3c2071d39f3facc737b4f41929a70f18f246339219e61130b4961609a1163503d76e3c5a86e43b91ef'
-  ],
-  'headers' => [
-    'accept' => 'text/plain',
-    'content-type' => 'application/x-www-form-urlencoded',
-  ],
-]);
-echo $response->getHeader("location")[0];
-// echo $response->getBody();
+
+/**
+ * Generates a SHA-512 hash of the provided data.
+ * @param mixed $data The input data to be hashed
+ * @return string The SHA-512 hash as a hexadecimal string
+ */
+function sha512($data) {
+    return hash("sha512", $data);
+}
+
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Handle the payment form submission
+    $data = json_decode(file_get_contents("php://input"), true);
+    // Process the payment with the received data
+    // print the payload
+    $application_payload;
+    if(isset($data['application_payload'])) {
+        $application_payload = $data['application_payload'];
+        $data["payload"] = $application_payload;
+    } else {
+        $application_payload = null;
+    }
+
+    echo json_encode($data);
+    exit;
+}
+
 ?>
-</body>
-</html>
+
+<form id="payment-form" action="https://test.payu.in/_payment" method="post" enctype="application/x-www-form-urlencoded"> <br>
+    <input name="key" value="JPM7Fg"> <br>
+    <input name="surl" value="https://test-payment-middleware.payu.in/simulatorResponse"> <br>
+    <input name="furl" value="https://test-payment-middleware.payu.in/simulatorResponse"> <br>
+    <input name="txnid" value="ypl938459435"> <br>
+    <input name="amount" value="10"> <br>
+    <input name="productinfo" value="test"> <br>
+    <input name="firstname" value="test"> <br>
+    <input name="email" value="test@test.com"> <br>
+    <input name="phone" value="9"> <br>
+    <input name="hash" value="ba02cb25a731c76ae3069b886413e5aeb084969db47f1460d77290b7e70619043bf9142bd140a3e9d6dc867a1536a51118498c61c7d239f8d09e336274fd3b8c"> <br>
+    <button type="submit">Pay Now</button>
+</form>
